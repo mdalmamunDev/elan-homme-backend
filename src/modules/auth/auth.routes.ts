@@ -13,16 +13,6 @@ router.post(
   AuthController.register
 );
 
-router.get(
-  '/google',
-  AuthController.redirectToGoogle
-);
-
-router.get(
-  '/google/callback',
-  AuthController.googleCallback
-);
-
 router.post(
   '/update-role',
   auth('user'),

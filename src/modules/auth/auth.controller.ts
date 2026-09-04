@@ -3,11 +3,7 @@ import catchAsync from '../../shared/catchAsync';
 import sendResponse from '../../shared/sendResponse';
 import { AuthService } from './auth.service';
 import ApiError from '../../errors/ApiError';
-import axios from 'axios';
 import { User } from '../user/user.model';
-import { TUser } from '../user/user.interface';
-import { TokenService } from '../token/token.service';
-import { config } from '../../config';
 
 // register
 const register = catchAsync(async (req, res) => {
@@ -29,92 +25,6 @@ const register = catchAsync(async (req, res) => {
   });
 });
 
-const redirectToGoogle = catchAsync(async (req, res) => {
-
-  const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
-
-  const options: Record<string, string> = {
-    redirect_uri: process.env.GOOGLE_REDIRECT_URI || "",
-    client_id: process.env.GOOGLE_CLIENT_ID || "",
-    access_type: "offline",
-    response_type: "code",
-    prompt: "consent",
-    scope: [
-      "https://www.googleapis.com/auth/userinfo.profile",
-      "https://www.googleapis.com/auth/userinfo.email"
-    ].join(" ")
-  };
-
-  const qs = new URLSearchParams(options).toString();
-  res.redirect(`${rootUrl}?${qs}`);
-
-});
-
-const googleCallback = catchAsync(async (req, res) => {
-
-  const { code } = req.query;
-
-  // try {
-  // Exchange code for tokens
-  const { data } = await axios.post(
-    "https://oauth2.googleapis.com/token",
-    {
-      code,
-      client_id: process.env.GOOGLE_CLIENT_ID,
-      client_secret: process.env.GOOGLE_CLIENT_SECRET,
-      redirect_uri: process.env.GOOGLE_REDIRECT_URI,
-      grant_type: "authorization_code"
-    }
-  );
-
-  const { access_token, id_token } = data;
-
-  // Get user info
-  const { data: userInfo } = await axios.get(
-    "https://openidconnect.googleapis.com/v1/userinfo",
-    {
-      headers: { Authorization: `Bearer ${access_token}` }
-    }
-  );
-
-
-  // "userInfo": {
-  //   "sub": "112833644480251334468",
-  //   "name": "Md. Al Mamun",
-  //   "given_name": "Md. Al",
-  //   "family_name": "Mamun",
-  //   "picture": "https://lh3.googleusercontent.com/a/ACg8ocJe3PQi2XjJq8H7LS17wJnz1xmKH9wc88LPtAJDDQaZ2PM04So=s96-c",
-  //   "email": "mamun.dev.pro@gmail.com",
-  //   "email_verified": true
-  // }
-  const { sub, email, name, picture } = userInfo;
-
-  // Find or Create user
-  let user = await User.findOne({ email });
-
-  if (!user) {
-    user = await User.create({
-      name,
-      email,
-      profileImage: picture,
-      password: null,
-      role: 'user',
-      status: 'active',
-      step: 0,
-      isEmailVerified: true,
-    });
-  }
-
-  // Create JWT
-  const userObj = JSON.parse(JSON.stringify(user)) as TUser;
-  const { accessToken, refreshToken } = await TokenService.accessAndRefreshToken(userObj);
-
-  // Ensure tokens exist before setting cookies
-  if (refreshToken) AuthService.setRefreshTokenCookie(res, refreshToken);
-
-  // Redirect to frontend with token
-  res.redirect(`${config.client.url}/auth/login?accessToken=${accessToken}`);
-});
 
 const login = catchAsync(async (req, res) => {
   const { email, password, role } = req.body;
@@ -264,8 +174,6 @@ const updateRole = catchAsync(async (req, res) => {
 
 export const AuthController = {
   register,
-  redirectToGoogle,
-  googleCallback,
   login,
   verifyEmail,
   resendOtp,

@@ -4,8 +4,7 @@ import sendResponse from '../../shared/sendResponse';
 import { MagazineService } from './magazine.service';
 
 const createMagazine = catchAsync(async (req, res) => {
-  const coverImage = req.file ? `/uploads/covers/${req.file.filename}` : undefined;
-  const result = await MagazineService.createMagazine(req.body, coverImage);
+  const result = await MagazineService.createMagazine(req.body);
   sendResponse(res, { code: StatusCodes.CREATED, message: 'Magazine created', data: result });
 });
 
@@ -20,8 +19,7 @@ const getMagazineBySlug = catchAsync(async (req, res) => {
 });
 
 const updateMagazine = catchAsync(async (req, res) => {
-  const coverImage = req.file ? `/uploads/covers/${req.file.filename}` : undefined;
-  const result = await MagazineService.updateMagazine(req.params.id as string, req.body, coverImage);
+  const result = await MagazineService.updateMagazine(req.params.id as string, req.body);
   sendResponse(res, { code: StatusCodes.OK, message: 'Magazine updated', data: result });
 });
 

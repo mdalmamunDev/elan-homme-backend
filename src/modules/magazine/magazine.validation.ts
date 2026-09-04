@@ -9,6 +9,7 @@ const pricingSchema = z.object({
 const createMagazineValidationSchema = z.object({
   body: z.object({
     title: z.string({ required_error: 'Title is required' }).min(1),
+    coverImage: z.string({ required_error: 'Cover image is required' }),
     slug: z.string({ required_error: 'Slug is required' }).min(1),
     description: z.string().optional(),
     pricing: z.array(pricingSchema).min(1, 'At least one country price is required'),
@@ -18,6 +19,7 @@ const createMagazineValidationSchema = z.object({
 const updateMagazineValidationSchema = z.object({
   body: z.object({
     title: z.string().min(1).optional(),
+    coverImage: z.string().optional(),
     description: z.string().optional(),
     pricing: z.array(pricingSchema).optional(),
     isActive: z.boolean().optional(),

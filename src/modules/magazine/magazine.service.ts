@@ -2,10 +2,10 @@ import { StatusCodes } from 'http-status-codes';
 import ApiError from '../../errors/ApiError';
 import { Magazine } from './magazine.model';
 
-const createMagazine = async (payload: any, coverImage?: string) => {
+const createMagazine = async (payload: any) => {
   const existing = await Magazine.findOne({ slug: payload.slug });
   if (existing) throw new ApiError(StatusCodes.CONFLICT, 'A magazine with this slug already exists');
-  return Magazine.create({ ...payload, coverImage: coverImage || '' });
+  return Magazine.create(payload);
 };
 
 const getAllMagazines = async () => Magazine.find({ isActive: true }).sort({ createdAt: -1 });
@@ -22,10 +22,9 @@ const getMagazineById = async (id: string) => {
   return magazine;
 };
 
-const updateMagazine = async (id: string, payload: any, coverImage?: string) => {
+const updateMagazine = async (id: string, payload: any) => {
   const magazine = await getMagazineById(id);
   Object.assign(magazine, payload);
-  if (coverImage) magazine.coverImage = coverImage;
   await magazine.save();
   return magazine;
 };

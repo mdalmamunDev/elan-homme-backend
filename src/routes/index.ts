@@ -8,6 +8,7 @@ import { PaymentRoutes } from '../modules/payment/payment.routes';
 import { DashboardRoutes } from '../modules/dashboard/dashboard.routes';
 import { BalanceRoutes } from '../modules/balance/balance.routes';
 import { UserSettingsRoutes } from '../modules/userSettings/UserSettings.routes';
+import { MagazineRoutes } from '../modules/magazine/magazine.routes';
 const router = express.Router();
 
 const apiRoutes = [
@@ -15,38 +16,44 @@ const apiRoutes = [
     path: '/auth',
     route: AuthRoutes,
   },
-  // {
-  //   path: '/user',
-  //   route: UserRoutes,
-  // },
-  // {
-  //   path: '/setting',
-  //   route: SettingsRoutes,
-  // },
-  // {
-  //   path: '/user-setting',
-  //   route: UserSettingsRoutes,
-  // },
-  // {
-  //   path: '/upload',
-  //   route: UploadRoutes,
-  // },
-  // {
-  //   path: '/notification',
-  //   route: NotificationRoutes
-  // },
-  // {
-  //   path: '/payment',
-  //   route: PaymentRoutes
-  // },
-  // {
-  //   path: '/dashboard',
-  //   route: DashboardRoutes
-  // },
-  // {
-  //   path: '/balance',
-  //   route: BalanceRoutes
-  // },
+  {
+    path: '/user',
+    route: UserRoutes,
+  },
+  {
+    path: '/setting',
+    route: SettingsRoutes,
+  },
+  {
+    path: '/user-setting',
+    route: UserSettingsRoutes,
+  },
+  {
+    path: '/upload',
+    route: UploadRoutes,
+  },
+  {
+    path: '/notification',
+    route: NotificationRoutes
+  },
+  {
+    path: '/payment',
+    route: PaymentRoutes
+  },
+  {
+    path: '/dashboard',
+    route: DashboardRoutes
+  },
+  {
+    path: '/balance',
+    route: BalanceRoutes
+  },
+
+  
+  {
+    path: '/magazine',
+    route: MagazineRoutes
+  },
 ];
 
 apiRoutes.forEach(route => router.use(route.path, route.route));
