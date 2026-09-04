@@ -1,0 +1,60 @@
+version: "3.9"
+
+services:
+  # Production service (original)
+  app:
+    build: .
+    container_name: backend_app
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    depends_on:
+      - redis
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro  # Mount host time zone
+      - /etc/timezone:/etc/timezone:ro  # Mount host time zone file
+    environment:
+      - TZ=Asia/Dhaka  # Set time zone to Asia/Dhaka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Development service with watch mode
+  app-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: backend_app_dev
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    depends_on:
+      - redis
+    restart: unless-stopped
+    volumes:
+      - ./src:/app/src  # Mount src directory for live updates
+      - ./tsconfig.json:/app/tsconfig.json  # Mount tsconfig for configuration
+      - ./package.json:/app/package.json  # Mount package files for dependency changes
+      - ./package-lock.json:/app/package-lock.json
+      - /etc/localtime:/etc/localtime:ro  # Mount host time zone
+      - /etc/timezone:/etc/timezone:ro  # Mount host time zone file
+    environment:
+      - NODE_ENV=development
+      - TZ=Asia/Dhaka  # Set time zone to Asia/Dhaka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  redis:
+    image: redis:7
+    container_name: backend_redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped

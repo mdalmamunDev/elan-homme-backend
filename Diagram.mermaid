@@ -1,0 +1,63 @@
+erDiagram
+    USER ||--o{ SUBSCRIPTION : owns
+    MAGAZINE ||--o{ SUBSCRIPTION : "subscribed via"
+    MAGAZINE ||--o{ ISSUE : has
+    SUBSCRIPTION ||--o{ PAYMENT : "paid by"
+
+    USER {
+        ObjectId _id PK
+        string name
+        string email UK
+        string passwordHash
+        string resetToken
+        date resetTokenExpiry
+        date createdAt
+    }
+
+    MAGAZINE {
+        ObjectId _id  
+        string title
+        string slug UK
+        string description
+        string coverImage
+        array pricing "country, currency, price"
+        date createdAt
+    }
+
+    SUBSCRIPTION {
+        ObjectId _id PK
+        ObjectId userId FK
+        ObjectId magazineId FK
+        string orderType "self | gift"
+        object payer "name, email"
+        object recipient "name, email (gift only)"
+        string period "e.g. 12 months"
+        number price
+        string currency
+        string country
+        string status "active | expired | cancelled"
+        date startDate
+        date endDate
+        boolean autoRenew
+        date createdAt
+    }
+
+    PAYMENT {
+        ObjectId _id PK
+        ObjectId subscriptionId FK
+        string mollieId
+        number amount
+        string currency
+        string method
+        string status "open | paid | failed | expired"
+        date paidAt
+        date createdAt
+    }
+
+    ISSUE {
+        ObjectId _id PK
+        ObjectId magazineId FK
+        string title
+        string pdfUrl
+        date publishedAt
+    }
