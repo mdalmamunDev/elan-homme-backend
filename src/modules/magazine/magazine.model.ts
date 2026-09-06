@@ -13,7 +13,18 @@ const pricingSchema = new Schema(
 const magazineSchema = new Schema<TMagazine, MagazineModel>(
   {
     title: { type: String, required: true, trim: true },
-    slug: { type: String, required: true, unique: true, lowercase: true, trim: true },
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+      validate: {
+        validator: (value: string) => /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value),
+        message:
+          'Slug must be URL-safe: only lowercase letters, numbers, and hyphens are allowed (no spaces or special characters).',
+      },
+    },
     description: { type: String, default: '' },
     coverImage: { type: String, default: 'defaults/cover.jpg' },
     pricing: { type: [pricingSchema], default: [] },

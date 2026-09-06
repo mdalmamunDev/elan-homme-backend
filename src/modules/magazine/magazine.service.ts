@@ -1,6 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import ApiError from '../../errors/ApiError';
 import { Magazine } from './magazine.model';
+import paginate from '../../helpers/paginationHelper';
 
 const createMagazine = async (payload: any) => {
   const existing = await Magazine.findOne({ slug: payload.slug });
@@ -8,10 +9,8 @@ const createMagazine = async (payload: any) => {
   return Magazine.create(payload);
 };
 
-const getAllMagazines = async () => Magazine.find({ isActive: true }).sort({ createdAt: -1 });
-
 const getMagazineBySlug = async (slug: string) => {
-  const magazine = await Magazine.findOne({ slug });
+  const magazine = await Magazine.findOne({ slug, isActive: true });
   if (!magazine) throw new ApiError(StatusCodes.NOT_FOUND, 'Magazine not found');
   return magazine;
 };
@@ -37,7 +36,6 @@ const deleteMagazine = async (id: string) => {
 
 export const MagazineService = {
   createMagazine,
-  getAllMagazines,
   getMagazineBySlug,
   getMagazineById,
   updateMagazine,

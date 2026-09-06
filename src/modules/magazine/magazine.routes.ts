@@ -7,17 +7,18 @@ import { MagazineValidation } from './magazine.validation';
 const router = Router();
 
 // public
-router.get('/', MagazineController.getAllMagazines);
+router.get('/web', MagazineController.getAllMagazinesWeb);
 router.get('/:slug', MagazineController.getMagazineBySlug);
 
 // admin
+router.get('/', auth('admin'), MagazineController.getAllMagazines);
 router.post(
   '/',
   auth('admin'),
   validateRequest(MagazineValidation.createMagazineValidationSchema),
   MagazineController.createMagazine
 );
-router.patch(
+router.put(
   '/:id',
   auth('admin'),
   validateRequest(MagazineValidation.updateMagazineValidationSchema),
