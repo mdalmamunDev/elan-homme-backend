@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import { User } from '../modules/user/user.model';
 import SettingSeeder from '../modules/settings/settings.seeder';
+import MagazineSeeder from '../modules/magazine/magazine.seeder';
 import { BalanceService } from '../modules/balance/balance.service';
 // Load environment variables
 dotenv.config();
@@ -160,6 +161,7 @@ const seedDatabase = async () => {
     await Promise.all([
       adminSeeder(),
       SettingSeeder(),
+      MagazineSeeder(),
       balanceSeeder(),
     ]);
     console.log('--------------> Database seeding completed <--------------');

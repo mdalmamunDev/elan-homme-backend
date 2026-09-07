@@ -12,6 +12,7 @@ export type TMagazine = {
   slug: string;
   description: string;
   coverImage: string;
+  tag?: string | null;
   pricing: TPricing[];
   isActive: boolean;
   createdAt: Date;

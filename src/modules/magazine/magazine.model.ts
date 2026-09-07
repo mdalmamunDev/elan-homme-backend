@@ -27,6 +27,7 @@ const magazineSchema = new Schema<TMagazine, MagazineModel>(
     },
     description: { type: String, default: '' },
     coverImage: { type: String, default: 'defaults/cover.jpg' },
+    tag: { type: String, default: null },
     pricing: { type: [pricingSchema], default: [] },
     isActive: { type: Boolean, default: true },
   },

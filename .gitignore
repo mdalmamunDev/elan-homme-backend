@@ -3,6 +3,8 @@ dist
 /uploads/*
 !/uploads/defaults/
 !/uploads/defaults/**
+!/uploads/cover/
+!/uploads/cover/**
 !/uploads/users/
 !/uploads/users/**
 /winston

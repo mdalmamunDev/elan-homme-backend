@@ -21,14 +21,15 @@ app.use(Morgan.errorHandler);
 // body parser
 app.use(
   cors({
-    // origin: [
-    //   'http://localhost:7002',
-    //   'http://localhost:3000',
-    //   'https://rakib7002.sobhoy.com/',
-    //   'http://localhost:5173', // TODO: Dashboard url
-    //   ""
-    // ],
-    origin: true,
+    origin: [
+      'https://elan-homme-admin.vercel.app',
+      'https://elan-homme.vercel.app',
+      'http://localhost:7002',
+      'http://localhost:3000',
+      'https://rakib7002.sobhoy.com/',
+      'http://localhost:5173', // TODO: Dashboard url
+    ],
+    // origin: true,
     credentials: true,
   })
 );

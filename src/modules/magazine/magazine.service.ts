@@ -30,8 +30,8 @@ const updateMagazine = async (id: string, payload: any) => {
 
 const deleteMagazine = async (id: string) => {
   const magazine = await getMagazineById(id);
-  magazine.isActive = false;
-  await magazine.save();
+  if (!magazine) throw new ApiError(StatusCodes.NOT_FOUND, 'Magazine not found');
+  await Magazine.findByIdAndDelete(id);
 };
 
 export const MagazineService = {
