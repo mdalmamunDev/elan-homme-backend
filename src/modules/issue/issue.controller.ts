@@ -24,7 +24,8 @@ const createIssue = catchAsync(async (req, res) => {
 const getIssues = catchAsync(async (req, res) => {
   const page = parseInt((req.query.page as string) || '1', 10);
   const limit = parseInt((req.query.limit as string) || '10', 10);
-  const { results, pagination } = await IssueService.getIssues(page, limit);
+  const magazineId = req.query.magazineId as string | undefined;
+  const { results, pagination } = await IssueService.getIssues(page, limit, magazineId);
   sendResponse(res, { code: StatusCodes.OK, data: results, pagination });
 });
 

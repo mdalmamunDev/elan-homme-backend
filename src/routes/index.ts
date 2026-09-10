@@ -10,6 +10,7 @@ import { BalanceRoutes } from '../modules/balance/balance.routes';
 import { UserSettingsRoutes } from '../modules/userSettings/UserSettings.routes';
 import { MagazineRoutes } from '../modules/magazine/magazine.routes';
 import { IssueRoutes } from '../modules/issue/issue.routes';
+import { SubscriptionRoutes } from '../modules/subscription/subscription.routes';
 const router = express.Router();
 
 const apiRoutes = [
@@ -58,6 +59,10 @@ const apiRoutes = [
   {
     path: '/issue',
     route: IssueRoutes,
+  },
+  {
+    path: '/subscription',
+    route: SubscriptionRoutes,
   },
 ];
 

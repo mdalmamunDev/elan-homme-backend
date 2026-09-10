@@ -1,4 +1,4 @@
-import { Model, Types } from 'mongoose';
+﻿import { Model, Types } from 'mongoose';
 
 export type TOrderType = 'self' | 'gift';
 export type TSubscriptionStatus = 'pending' | 'active' | 'cancelled' | 'expired';
@@ -15,7 +15,7 @@ export type TSubscription = {
   orderType: TOrderType;
   payer: TContact;
   recipient?: TContact; // gift orders only
-  period: string; // e.g. "12 months"
+  period: number; // subscription length in months, e.g. 12
   price: number;
   currency: string;
   country: string;

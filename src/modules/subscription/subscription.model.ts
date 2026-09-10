@@ -1,4 +1,4 @@
-import { model, Schema } from 'mongoose';
+﻿import { model, Schema } from 'mongoose';
 import { TSubscription, SubscriptionModel } from './subscription.interface';
 
 const contactSchema = new Schema(
@@ -16,7 +16,7 @@ const subscriptionSchema = new Schema<TSubscription, SubscriptionModel>(
     orderType: { type: String, enum: ['self', 'gift'], required: true },
     payer: { type: contactSchema, required: true },
     recipient: { type: contactSchema },
-    period: { type: String, required: true },
+    period: { type: Number, required: true, min: 1 }, // subscription length in months
     price: { type: Number, required: true },
     currency: { type: String, required: true },
     country: { type: String, required: true, uppercase: true },

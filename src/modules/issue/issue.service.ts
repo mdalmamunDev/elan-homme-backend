@@ -1,4 +1,5 @@
 ﻿import { StatusCodes } from 'http-status-codes';
+import { isValidObjectId } from 'mongoose';
 import ApiError from '../../errors/ApiError';
 import { Issue } from './issue.model';
 import { IssueDownload } from './issue.download.model';
@@ -12,11 +13,13 @@ const createIssue = async (payload: { title: string; magazineId: string; filePat
   return Issue.create(payload);
 };
 
-const getIssues = async (page: number, limit: number) => {
+const getIssues = async (page: number, limit: number, magazineId?: string) => {
   const skip = (page - 1) * limit;
+  // optional magazineId filter — lets the admin panel list issues of a single magazine (incl. inactive)
+  const filter = magazineId && isValidObjectId(magazineId) ? { magazineId } : {};
   const [results, totalCount] = await Promise.all([
-    Issue.find().populate('magazineId', 'title slug').sort({ createdAt: -1 }).skip(skip).limit(limit),
-    Issue.countDocuments(),
+    Issue.find(filter).populate('magazineId', 'title slug').sort({ createdAt: -1 }).skip(skip).limit(limit),
+    Issue.countDocuments(filter),
   ]);
   return {
     results,
