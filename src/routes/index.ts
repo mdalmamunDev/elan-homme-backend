@@ -1,4 +1,4 @@
-import express from 'express';
+﻿import express from 'express';
 import { UserRoutes } from '../modules/user/user.route';
 import { AuthRoutes } from '../modules/auth/auth.routes';
 import { SettingsRoutes } from '../modules/settings/settings.routes';
@@ -9,6 +9,7 @@ import { DashboardRoutes } from '../modules/dashboard/dashboard.routes';
 import { BalanceRoutes } from '../modules/balance/balance.routes';
 import { UserSettingsRoutes } from '../modules/userSettings/UserSettings.routes';
 import { MagazineRoutes } from '../modules/magazine/magazine.routes';
+import { IssueRoutes } from '../modules/issue/issue.routes';
 const router = express.Router();
 
 const apiRoutes = [
@@ -53,6 +54,10 @@ const apiRoutes = [
   {
     path: '/magazine',
     route: MagazineRoutes
+  },
+  {
+    path: '/issue',
+    route: IssueRoutes,
   },
 ];
 
